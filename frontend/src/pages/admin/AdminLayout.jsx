@@ -6,7 +6,7 @@ const AdminLayout = () => {
     <div className="min-h-screen bg-[#F7F6F3] flex flex-col">
 
       {/* 🔹 TOP ADMIN NAVBAR */}
-      {/* <AdminNavbar /> */}
+      <AdminNavbar />
 
       {/* 🔹 MAIN DASHBOARD CONTENT */}
       <main className="flex-1 px-8 py-6">

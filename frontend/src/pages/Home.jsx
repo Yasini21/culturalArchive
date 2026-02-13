@@ -2,6 +2,8 @@ import { useNavigate } from "react-router-dom";
 
 const Home = () => {
   const navigate = useNavigate();
+  const token = localStorage.getItem("token");
+
 
   return (
     <div className="min-h-screen bg-[#FAF7F2] text-[#2B2A28]">
@@ -66,7 +68,14 @@ const Home = () => {
             </button>
 
             <button
-              onClick={() => navigate("/login")}
+              onClick={() => {
+  if (token) {
+    navigate("/addstory");
+  } else {
+    navigate("/login");
+  }
+}}
+
               className="
                 border
                 border-[#C2A14D]
@@ -136,7 +145,14 @@ const Home = () => {
           </p>
 
           <button
-            onClick={() => navigate("/login")}
+            onClick={() => {
+  if (token) {
+    navigate("/addstory");
+  } else {
+    navigate("/login");
+  }
+}}
+
             className="
               bg-[#2B1D16]
               text-[#F3EBDD]

@@ -8,57 +8,69 @@ const AddStory = () => {
   const [image, setImage] = useState(null);
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  const [categories, setCategories] = useState([]);
 
- const handleSubmit = async (e) => {
-  e.preventDefault();
-  setLoading(true);
-  setMessage("");
+  const categoryOptions = [
+    "Ritual",
+    "Festival",
+    "Food",
+    "Language",
+    "Oral History",
+    "Dress",
+    "Belief",
+    "Custom",
+  ];
 
-  try {
-    const formData = new FormData();
-    formData.append("title", title);
-    formData.append("region", region);
-    formData.append("description", description);
-
-    if (image) {
-      formData.append("image", image); // 🔥 IMPORTANT
+  const handleCategoryChange = (category) => {
+    if (categories.includes(category)) {
+      setCategories(categories.filter((c) => c !== category));
+    } else {
+      setCategories([...categories, category]);
     }
+  };
 
-    await API.post("/stories", formData, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        // ❌ DO NOT set Content-Type manually
-      },
-    });
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setMessage("");
 
-    setMessage("Your story has been submitted for approval.");
+    try {
+      const formData = new FormData();
+      formData.append("title", title);
+      formData.append("region", region);
+      formData.append("description", description);
 
-    setTitle("");
-    setRegion("");
-    setDescription("");
-    setImage(null);
-  } catch (err) {
-    setMessage(err.response?.data?.msg || "Failed to submit story");
-  } finally {
-    setLoading(false);
-  }
-};
+      formData.append("categories", JSON.stringify(categories));
 
+
+      if (image) {
+        formData.append("image", image);
+      }
+
+      await API.post("/stories", formData, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+
+      setMessage("Your story has been submitted for approval.");
+
+      setTitle("");
+      setRegion("");
+      setDescription("");
+      setImage(null);
+      setCategories([]); 
+
+    } catch (err) {
+      setMessage(err.response?.data?.msg || "Failed to submit story");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-[#FBF9F6] flex justify-center px-6 py-12">
-
-      <div
-        className="
-          bg-white
-          w-full
-          max-w-xl
-          p-10
-          border border-[#E6E0D8]
-          rounded-lg
-        "
-      >
-        {/* TITLE */}
+      <div className="bg-white w-full max-w-xl p-10 border border-[#E6E0D8] rounded-lg">
         <h1 className="text-2xl font-semibold text-[#2C2A28] mb-2">
           Add a Cultural Story
         </h1>
@@ -67,10 +79,8 @@ const AddStory = () => {
           Share traditions, memories, or practices from your region.
         </p>
 
-        {/* FORM */}
         <form onSubmit={handleSubmit} className="space-y-6">
 
-          {/* TITLE */}
           <div>
             <label className="block text-sm mb-1 text-[#2C2A28]">
               Story Title
@@ -80,18 +90,10 @@ const AddStory = () => {
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               required
-              className="
-                w-full
-                px-4 py-2
-                border border-[#E6E0D8]
-                rounded-md
-                focus:outline-none
-                focus:border-[#7A4A2E]
-              "
+              className="w-full px-4 py-2 border border-[#E6E0D8] rounded-md focus:outline-none focus:border-[#7A4A2E]"
             />
           </div>
 
-          {/* REGION */}
           <div>
             <label className="block text-sm mb-1 text-[#2C2A28]">
               Region
@@ -101,18 +103,10 @@ const AddStory = () => {
               value={region}
               onChange={(e) => setRegion(e.target.value)}
               required
-              className="
-                w-full
-                px-4 py-2
-                border border-[#E6E0D8]
-                rounded-md
-                focus:outline-none
-                focus:border-[#7A4A2E]
-              "
+              className="w-full px-4 py-2 border border-[#E6E0D8] rounded-md focus:outline-none focus:border-[#7A4A2E]"
             />
           </div>
 
-          {/* DESCRIPTION */}
           <div>
             <label className="block text-sm mb-1 text-[#2C2A28]">
               Description
@@ -122,59 +116,52 @@ const AddStory = () => {
               onChange={(e) => setDescription(e.target.value)}
               rows={5}
               required
-              className="
-                w-full
-                px-4 py-2
-                border border-[#E6E0D8]
-                rounded-md
-                focus:outline-none
-                focus:border-[#7A4A2E]
-              "
+              className="w-full px-4 py-2 border border-[#E6E0D8] rounded-md focus:outline-none focus:border-[#7A4A2E]"
             />
           </div>
 
-    {/* IMAGE UPLOAD */}
-<div>
-  <label className="block text-sm mb-1 text-[#3A2F2A]">
-    Upload Image (optional)
-  </label>
+          <div>
+            <label className="block text-sm mb-1 text-[#3A2F2A]">
+              Upload Image (optional)
+            </label>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => setImage(e.target.files[0])}
+              className="w-full px-3 py-2 border border-[#E6E0D8] rounded-md bg-white"
+            />
+          </div>
 
-  <input
-    type="file"
-    accept="image/*"
-    onChange={(e) => setImage(e.target.files[0])}
-    className="
-      w-full
-      px-3 py-2
-      border border-[#E6E0D8]
-      rounded-md
-      bg-white
-    "
-  />
-</div>
+          {/* 🔥 Categories Section */}
+          <div>
+            <label className="block mb-2 font-medium text-[#2C2A28]">
+              Categories
+            </label>
 
+            <div className="grid grid-cols-2 gap-3">
+              {categoryOptions.map((category) => (
+                <label key={category} className="flex items-center gap-2 text-[#5E564D]">
+                  <input
+                    type="checkbox"
+                    checked={categories.includes(category)}
+                    onChange={() => handleCategoryChange(category)}
+                    className="accent-[#C2A14D]"
+                  />
+                  {category}
+                </label>
+              ))}
+            </div>
+          </div>
 
-          {/* SUBMIT */}
           <button
             type="submit"
             disabled={loading}
-            className="
-              bg-[#7A4A2E]
-              text-white
-              px-6
-              py-3
-              rounded-md
-              font-medium
-              hover:bg-[#5E3823]
-              transition
-              disabled:opacity-60
-            "
+            className="bg-[#7A4A2E] text-white px-6 py-3 rounded-md font-medium hover:bg-[#5E3823] transition disabled:opacity-60"
           >
             {loading ? "Submitting..." : "Submit Story"}
           </button>
         </form>
 
-        {/* MESSAGE */}
         {message && (
           <p className="text-sm text-[#6E6259] mt-6">
             {message}

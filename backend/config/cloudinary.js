@@ -9,7 +9,7 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-// 🔴 TEMP DEBUG (REMOVE LATER)
+
 console.log("Cloudinary key:", process.env.CLOUDINARY_API_KEY);
 
 export default cloudinary;

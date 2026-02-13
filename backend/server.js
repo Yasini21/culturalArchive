@@ -5,14 +5,16 @@ import authRoutes from "./routes/authRoutes.js";
 import dashboardRoutes from "./routes/dashboardRoutes.js";
 import storyRoutes from "./routes/storyRoutes.js";
 import cors from "cors";
+import userRoutes from "./routes/userRoutes.js";
 
 
 
 dotenv.config();
 
 const app = express();
-app.use(cors())
-app.use(express.json())
+app.use(cors());
+app.use(express.json());
+app.use("/users", userRoutes);
 
 
 mongoose
@@ -23,6 +25,7 @@ mongoose
 app.use("/auth", authRoutes);
 app.use("/dashboard", dashboardRoutes);
 app.use("/stories", storyRoutes);
+app.use("/users", userRoutes);
 
 
 app.listen(4000, () => {

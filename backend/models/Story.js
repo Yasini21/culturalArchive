@@ -15,6 +15,16 @@ const storySchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    isEditRequest: {
+  type: Boolean,
+  default: false
+},
+originalStory: {
+  type: mongoose.Schema.Types.ObjectId,
+  ref: "Story",
+  default: null
+},
+
     image: {
       type: String,
       default: null,
@@ -25,8 +35,56 @@ const storySchema = new mongoose.Schema(
     },
     isApproved: {
       type: Boolean,
-      default: false, 
+      default: false,
     },
+    isDeleted: {
+      type: Boolean,
+      default: false,
+    },
+    era: {
+  type: String,
+  enum: ["Ancient", "Colonial", "Modern"],
+},
+
+year: {
+  type: Number,
+},
+
+region: {
+  type: String,
+},
+
+category: {
+  type: String,
+  enum: ["Ritual", "Festival", "Food", "Language", "Oral History", "Dress"],
+},
+
+isFeatured: {
+  type: Boolean,
+  default: false,
+},
+    likes: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
+    categories: [
+  {
+    type: String,
+    enum: [
+      "Ritual",
+      "Festival",
+      "Food",
+      "Language",
+      "Oral History",
+      "Dress",
+      "Belief",
+      "Custom"
+    ],
+  },
+],
+
   },
   { timestamps: true }
 );
