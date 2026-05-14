@@ -7,8 +7,6 @@ const Home = () => {
 
   return (
     <div className="min-h-screen bg-[#FAF7F2] text-[#2B2A28]">
-
-      {/* HERO — STRONG FIRST IMPRESSION */}
       <section
         className="
           min-h-[90vh]
@@ -92,8 +90,6 @@ const Home = () => {
           </div>
         </div>
       </section>
-
-      {/* DISCOVERY — NO CARDS, ARCHIVE FEEL */}
       <section className="py-24 px-6">
         <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-16">
 
@@ -130,8 +126,6 @@ const Home = () => {
 
         </div>
       </section>
-
-      {/* CALL TO ACTION — QUIET BUT POWERFUL */}
       <section className="py-24 px-6 bg-[#EFE6D8]">
         <div className="max-w-3xl mx-auto text-center">
 

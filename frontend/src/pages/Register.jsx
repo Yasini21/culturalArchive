@@ -11,11 +11,7 @@ const Register = () => {
 
   return (
     <div className="min-h-screen bg-[#F7F3EE]">
-
-      {/* 🖼️ TOP IMAGE */}
-      
-
-      {/* 📝 REGISTER CARD */}
+      {/* REGISTER CARD */}
       <div className="flex justify-center px-4 py-10">
         <div
           className="

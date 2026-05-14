@@ -22,7 +22,7 @@ const [totalPages, setTotalPages] = useState(1);
     userId = decoded.id;
   }
 
-  // 🔄 Fetch All Stories
+  //  Fetch All Stories
   const fetchStories = async () => {
   try {
     const res = await API.get(`/stories?page=${page}`);
@@ -40,7 +40,7 @@ const [totalPages, setTotalPages] = useState(1);
 }, [page]);
 
 
-  // 🔍 Filter Stories
+  //  Filter Stories
   const applyFilter = async () => {
     try {
       setLoading(true);
@@ -55,7 +55,7 @@ const [totalPages, setTotalPages] = useState(1);
     }
   };
 
-  // ❤️ Like
+  //  Like
   const handleLike = async (id) => {
     if (!token) {
       navigate("/login");
@@ -119,7 +119,7 @@ const [totalPages, setTotalPages] = useState(1);
     {/* MAIN LAYOUT */}
     <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-10">
 
-      {/* 🔎 SIDEBAR FILTER */}
+      {/* SIDEBAR FILTER */}
       <div className="md:col-span-1 bg-white p-6 rounded-2xl shadow-sm border h-fit">
 
         <h2 className="text-lg font-semibold mb-6 text-[#2F2A24]">
@@ -182,7 +182,7 @@ const [totalPages, setTotalPages] = useState(1);
         </div>
       </div>
 
-      {/* 📚 STORY FEED */}
+      {/*  STORY  */}
       <div className="md:col-span-3 space-y-10">
 
         {stories.length === 0 && (

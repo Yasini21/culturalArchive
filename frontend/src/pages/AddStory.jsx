@@ -132,7 +132,6 @@ const AddStory = () => {
             />
           </div>
 
-          {/* 🔥 Categories Section */}
           <div>
             <label className="block mb-2 font-medium text-[#2C2A28]">
               Categories
