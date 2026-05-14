@@ -20,15 +20,14 @@ import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminApproval from "./pages/admin/AdminApproval";
 
 function App() {
-  const location = useLocation(); // ✅ get current route
+  const location = useLocation(); 
 
   return (
     <>
-      {/* ✅ Show Navbar on all pages EXCEPT admin routes */}
       {!location.pathname.startsWith("/admin") && <Navbar />}
 
       <Routes>
-        {/* 🌍 PUBLIC */}
+        {/* PUBLIC */}
         <Route path="/" element={<Home />} />
         <Route path="/explore" element={<Explore />} />
         <Route path="/about" element={<About />} />
@@ -38,9 +37,6 @@ function App() {
         <Route path="/edit/:id" element={<EditStory />} />
         <Route path="/mystories" element={<MyStories />} />
 
-
-
-        {/* 👤 USER */}
         <Route
           path="/addstory"
           element={
@@ -50,7 +46,6 @@ function App() {
           }
         />
 
-        {/* 🛡️ ADMIN */}
         <Route
           path="/admin"
           element={

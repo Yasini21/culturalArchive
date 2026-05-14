@@ -5,10 +5,10 @@ const AdminLayout = () => {
   return (
     <div className="min-h-screen bg-[#F7F6F3] flex flex-col">
 
-      {/* 🔹 TOP ADMIN NAVBAR */}
+      {/* TOP ADMIN NAVBAR */}
       <AdminNavbar />
 
-      {/* 🔹 MAIN DASHBOARD CONTENT */}
+      {/* MAIN DASHBOARD CONTENT */}
       <main className="flex-1 px-8 py-6">
         <div className="max-w-7xl mx-auto">
 
@@ -20,7 +20,7 @@ const AdminLayout = () => {
         </div>
       </main>
 
-      {/* 🔹 OPTIONAL FOOTER */}
+      {/* OPTIONAL FOOTER */}
       <footer className="text-center text-xs text-[#8A8178] py-4">
         © {new Date().getFullYear()} Cultural Archive · Admin Panel
       </footer>
