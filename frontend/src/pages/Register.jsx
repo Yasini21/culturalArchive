@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import API from "../services/api";
-import loginImg from "../assets/images/login.jpg";
+
 
 const Register = () => {
   const navigate = useNavigate();
@@ -13,13 +13,7 @@ const Register = () => {
     <div className="min-h-screen bg-[#F7F3EE]">
 
       {/* 🖼️ TOP IMAGE */}
-      <div className="w-full h-56 md:h-48 lg:h-56">
-        <img
-          src={loginImg}
-          alt="Cultural heritage"
-          className="w-full h-full object-cover object-top md:object-center"
-        />
-      </div>
+      
 
       {/* 📝 REGISTER CARD */}
       <div className="flex justify-center px-4 py-10">

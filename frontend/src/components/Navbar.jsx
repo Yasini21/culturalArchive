@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import logo from "../assets/images/Logo.png";
 
 const Navbar = () => {
@@ -8,7 +8,7 @@ const Navbar = () => {
   const role = localStorage.getItem("role");
   const userName = localStorage.getItem("userName");
 
-  const [open, setOpen] = useState(false);
+  const [profileOpen, setProfileOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const handleLogout = () => {
@@ -16,100 +16,90 @@ const Navbar = () => {
     navigate("/");
   };
 
+  const navLinkStyle = ({ isActive }) =>
+    isActive
+      ? "text-[#7A4A2E] font-semibold"
+      : "text-[#3A2F2A] hover:text-[#7A4A2E]";
+
   return (
     <nav className="bg-[#FBF8F4] border-b border-[#E6DDD2] sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
 
         {/* BRAND */}
-        <Link
-          to="/"
-          onClick={() => setMobileOpen(false)}
-          className="flex items-center gap-3 group"
-        >
-          <img
-            src={logo}
-            alt="Cultural Archive"
-            className="h-8 md:h-9 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
-          />
-
-          <span className="hidden md:block text-lg font-semibold tracking-wide text-[#3A2F2A]">
+        <NavLink to="/" className="flex items-center gap-2 sm:gap-3">
+          <img src={logo} alt="Cultural Archive" className="h-8 w-auto" />
+          <span className="text-base sm:text-lg font-semibold text-[#3A2F2A]">
             Cultural Archive
           </span>
-        </Link>
+        </NavLink>
 
-        {/* DESKTOP LINKS */}
-        <div className="hidden md:flex items-center gap-8 text-sm text-[#3A2F2A]">
+        {/* DESKTOP MENU */}
+        <div className="hidden md:flex items-center gap-8 text-sm">
 
-          {/* Guest */}
           {!token && (
             <>
-              <Link to="/" className="hover:text-[#7A4A2E] transition">Home</Link>
-              <Link to="/explore" className="hover:text-[#7A4A2E] transition">Explore</Link>
-              <Link to="/about" className="hover:text-[#7A4A2E] transition">About</Link>
+              <NavLink to="/" className={navLinkStyle}>Home</NavLink>
+              <NavLink to="/explore" className={navLinkStyle}>Explore</NavLink>
+              <NavLink to="/about" className={navLinkStyle}>About</NavLink>
             </>
           )}
 
-          {/* User */}
           {token && role === "user" && (
             <>
-              <Link to="/" className="hover:text-[#7A4A2E] transition">Home</Link>
-              <Link to="/explore" className="hover:text-[#7A4A2E] transition">Explore</Link>
-              <Link to="/about" className="hover:text-[#7A4A2E] transition">About</Link>
-              <Link to="/mystories" className="hover:text-[#7A4A2E] transition">
+              <NavLink to="/" className={navLinkStyle}>Home</NavLink>
+              <NavLink to="/explore" className={navLinkStyle}>Explore</NavLink>
+              <NavLink to="/mystories" className={navLinkStyle}>
                 My Stories
-              </Link>
-              <Link
+              </NavLink>
+              <NavLink
                 to="/addstory"
-                className="font-medium text-[#7A4A2E] hover:opacity-80 transition"
+                className="px-4 py-1.5 bg-[#7A4A2E] text-white rounded-lg text-xs font-medium hover:bg-[#5f3923]"
               >
                 Add Story
-              </Link>
+              </NavLink>
             </>
           )}
 
-          {/* Admin */}
           {token && role === "admin" && (
             <>
-              <Link to="/admin" className="hover:text-[#7A4A2E] transition">
+              <NavLink to="/admin" className={navLinkStyle}>
                 Dashboard
-              </Link>
-              <Link to="/admin/approvals" className="hover:text-[#7A4A2E] transition">
+              </NavLink>
+              <NavLink to="/admin/approvals" className={navLinkStyle}>
                 Pending
-              </Link>
+              </NavLink>
             </>
           )}
 
-          {/* PROFILE DROPDOWN */}
+          {/* PROFILE */}
           {token && (
             <div className="relative">
               <button
-                onClick={() => setOpen(!open)}
-                className="w-9 h-9 bg-[#7A4A2E] text-white rounded-full flex items-center justify-center font-semibold hover:opacity-90 transition"
+                onClick={() => setProfileOpen(!profileOpen)}
+                className="w-9 h-9 bg-[#7A4A2E] text-white rounded-full flex items-center justify-center font-semibold"
               >
                 {userName?.charAt(0).toUpperCase()}
               </button>
 
-              {open && (
-                <div className="absolute right-0 mt-3 w-48 bg-white border border-[#E6DDD2] rounded-xl shadow-lg overflow-hidden">
-
-                  <div className="px-4 py-3 border-b text-sm text-[#6B5B52]">
+              {profileOpen && (
+                <div className="absolute right-0 mt-3 w-44 bg-white border rounded-xl shadow-lg overflow-hidden">
+                  <div className="px-4 py-3 text-sm text-[#6B5B52] border-b">
                     {userName}
                   </div>
 
-                  {/* My Stories inside dropdown (nice UX touch) */}
                   {role === "user" && (
-                    <Link
+                    <NavLink
                       to="/mystories"
-                      onClick={() => setOpen(false)}
-                      className="block px-4 py-3 text-sm hover:bg-[#F5F3EF] transition"
+                      onClick={() => setProfileOpen(false)}
+                      className="block px-4 py-3 text-sm hover:bg-[#F5F3EF]"
                     >
                       My Stories
-                    </Link>
+                    </NavLink>
                   )}
 
                   <button
                     onClick={handleLogout}
-                    className="w-full text-left px-4 py-3 text-sm hover:bg-[#F5F3EF] transition text-red-600"
+                    className="w-full text-left px-4 py-3 text-sm hover:bg-[#F5F3EF] text-red-600"
                   >
                     Logout
                   </button>
@@ -119,7 +109,7 @@ const Navbar = () => {
           )}
         </div>
 
-        {/* MOBILE MENU BUTTON */}
+        {/* MOBILE BUTTON */}
         <button
           className="md:hidden text-2xl text-[#3A2F2A]"
           onClick={() => setMobileOpen(!mobileOpen)}
@@ -130,30 +120,29 @@ const Navbar = () => {
 
       {/* MOBILE MENU */}
       {mobileOpen && (
-        <div className="md:hidden px-6 pb-6 flex flex-col gap-4 text-sm text-[#3A2F2A] bg-[#FBF8F4] border-t border-[#E6DDD2]">
+        <div className="md:hidden px-4 pb-6 flex flex-col gap-4 text-sm bg-[#FBF8F4] border-t">
 
           {!token && (
             <>
-              <Link to="/" onClick={() => setMobileOpen(false)}>Home</Link>
-              <Link to="/explore" onClick={() => setMobileOpen(false)}>Explore</Link>
-              <Link to="/about" onClick={() => setMobileOpen(false)}>About</Link>
+              <NavLink to="/" onClick={() => setMobileOpen(false)} className={navLinkStyle}>Home</NavLink>
+              <NavLink to="/explore" onClick={() => setMobileOpen(false)} className={navLinkStyle}>Explore</NavLink>
+              <NavLink to="/about" onClick={() => setMobileOpen(false)} className={navLinkStyle}>About</NavLink>
             </>
           )}
 
           {token && role === "user" && (
             <>
-              <Link to="/" onClick={() => setMobileOpen(false)}>Home</Link>
-              <Link to="/explore" onClick={() => setMobileOpen(false)}>Explore</Link>
-              <Link to="/about" onClick={() => setMobileOpen(false)}>About</Link>
-              <Link to="/mystories" onClick={() => setMobileOpen(false)}>My Stories</Link>
-              <Link to="/addstory" onClick={() => setMobileOpen(false)}>Add Story</Link>
+              <NavLink to="/" onClick={() => setMobileOpen(false)} className={navLinkStyle}>Home</NavLink>
+              <NavLink to="/explore" onClick={() => setMobileOpen(false)} className={navLinkStyle}>Explore</NavLink>
+              <NavLink to="/mystories" onClick={() => setMobileOpen(false)} className={navLinkStyle}>My Stories</NavLink>
+              <NavLink to="/addstory" onClick={() => setMobileOpen(false)}>Add Story</NavLink>
             </>
           )}
 
           {token && role === "admin" && (
             <>
-              <Link to="/admin" onClick={() => setMobileOpen(false)}>Dashboard</Link>
-              <Link to="/admin/approvals" onClick={() => setMobileOpen(false)}>Pending</Link>
+              <NavLink to="/admin" onClick={() => setMobileOpen(false)} className={navLinkStyle}>Dashboard</NavLink>
+              <NavLink to="/admin/approvals" onClick={() => setMobileOpen(false)} className={navLinkStyle}>Pending</NavLink>
             </>
           )}
 

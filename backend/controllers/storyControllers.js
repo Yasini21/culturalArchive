@@ -5,18 +5,52 @@ import cloudinary from "../config/cloudinary.js";
 
 export const getStories = async (req, res) => {
   try {
-    const stories = await Story.find({
+    const page = Math.max(parseInt(req.query.page) || 1, 1);
+    const limit = 6;
+    const skip = (page - 1) * limit;
+
+    // Common filter (approved + not deleted)
+    const filter = {
       isApproved: true,
       isDeleted: false,
-    })
-      .sort({ createdAt: -1 })
-      .populate("createdBy", "name"); // 🔥 only name
+    };
 
-    res.json(stories);
+    // Count total documents based on filter
+    const totalStories = await Story.countDocuments(filter);
+
+    // If no stories exist
+    if (totalStories === 0) {
+      return res.json({
+        stories: [],
+        currentPage: 1,
+        totalPages: 1,
+      });
+    }
+
+    const totalPages = Math.ceil(totalStories / limit);
+
+    // Prevent page overflow (e.g., page 999)
+    const safePage = page > totalPages ? totalPages : page;
+
+    const stories = await Story.find(filter)
+      .populate("createdBy", "name email")
+      .sort({ createdAt: -1 })
+      .skip((safePage - 1) * limit)
+      .limit(limit);
+
+    res.json({
+      stories,
+      currentPage: safePage,
+      totalPages,
+    });
+
   } catch (err) {
+    console.error("Pagination Error:", err);
     res.status(500).json({ msg: "Failed to fetch stories" });
   }
 };
+
+
 
 /* ADD STORY (Goes to Admin Approval) */
 

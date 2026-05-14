@@ -30,41 +30,30 @@ export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    // 🔑 ADMIN LOGIN (password from .env)
-    if (password === process.env.ADMIN_SECRET_PASSWORD) {
-      const token = jwt.sign(
-        { role: "admin", email },
-        process.env.JWT_SECRET,
-        { expiresIn: "1d" }
-      );
-
-      return res.json({
-        token,
-        role: "admin",
-        msg: "Admin login successful",
-      });
-    }
-
-    // 👤 USER LOGIN
     const user = await User.findOne({ email });
-    if (!user) return res.status(404).json({ msg: "User not found" });
+    if (!user)
+      return res.status(404).json({ msg: "User not found" });
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch)
       return res.status(401).json({ msg: "Invalid credentials" });
 
     const token = jwt.sign(
-      { id: user._id, role: "user" },
+      {
+        id: user._id,
+        role: user.role,  // 🔥 IMPORTANT
+      },
       process.env.JWT_SECRET,
       { expiresIn: "1d" }
     );
 
     res.json({
       token,
-      role: "user",
-      name: user.name,  
-      msg: "User login successful",
+      role: user.role,   // 🔥 IMPORTANT
+      name: user.name,
+      msg: "Login successful",
     });
+
   } catch (err) {
     res.status(500).json({ msg: "Login failed" });
   }

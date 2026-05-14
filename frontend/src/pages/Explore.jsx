@@ -8,6 +8,9 @@ const Explore = () => {
   const [loading, setLoading] = useState(true);
   const [region, setRegion] = useState("");
   const [category, setCategory] = useState("");
+  const [page, setPage] = useState(1);
+const [totalPages, setTotalPages] = useState(1);
+
 
   const navigate = useNavigate();
   const role = localStorage.getItem("role");
@@ -21,19 +24,21 @@ const Explore = () => {
 
   // 🔄 Fetch All Stories
   const fetchStories = async () => {
-    try {
-      const res = await API.get("/stories");
-      setStories(res.data);
-    } catch (err) {
-      console.error("Failed to load stories");
-    } finally {
-      setLoading(false);
-    }
-  };
+  try {
+    const res = await API.get(`/stories?page=${page}`);
+    setStories(res.data.stories);
+    setTotalPages(res.data.totalPages);
+  } catch (err) {
+    console.error("Failed to load stories");
+  } finally {
+    setLoading(false);
+  }
+};
 
-  useEffect(() => {
-    fetchStories();
-  }, []);
+ useEffect(() => {
+  fetchStories();
+}, [page]);
+
 
   // 🔍 Filter Stories
   const applyFilter = async () => {
@@ -282,6 +287,54 @@ const Explore = () => {
           );
         })}
       </div>
+      {/* PAGINATION */}
+{totalPages > 1 && (
+  <div className="flex justify-center items-center gap-2 mt-12 flex-wrap">
+
+    {/* Previous */}
+    <button
+      disabled={page === 1}
+      onClick={() => setPage(page - 1)}
+      className={`px-4 py-2 rounded-lg text-sm font-medium transition
+        ${page === 1
+          ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+          : "bg-white border border-[#E6DDD2] text-[#3A2F2A] hover:bg-[#F5F3EF] hover:border-[#7A4A2E]"}
+      `}
+    >
+      ← Previous
+    </button>
+
+    {/* Page Numbers */}
+    {Array.from({ length: totalPages }, (_, index) => (
+      <button
+        key={index}
+        onClick={() => setPage(index + 1)}
+        className={`w-9 h-9 rounded-lg text-sm font-medium transition
+          ${page === index + 1
+            ? "bg-[#7A4A2E] text-white shadow-sm"
+            : "bg-white border border-[#E6DDD2] text-[#3A2F2A] hover:bg-[#F5F3EF]"}
+        `}
+      >
+        {index + 1}
+      </button>
+    ))}
+
+    {/* Next */}
+    <button
+      disabled={page === totalPages}
+      onClick={() => setPage(page + 1)}
+      className={`px-4 py-2 rounded-lg text-sm font-medium transition
+        ${page === totalPages
+          ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+          : "bg-white border border-[#E6DDD2] text-[#3A2F2A] hover:bg-[#F5F3EF] hover:border-[#7A4A2E]"}
+      `}
+    >
+      Next →
+    </button>
+
+  </div>
+)}
+
 
     </div>
   </div>

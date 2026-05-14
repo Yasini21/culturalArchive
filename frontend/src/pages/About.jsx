@@ -83,9 +83,14 @@ const About = () => {
             </p>
           </div>
         </div>
+        {/* FOOTER */}
+      <footer className="py-8 text-center text-sm text-[#6B5B52]">
+        © {new Date().getFullYear()} Cultural Archive • Memory before it fades
+      </footer>
 
       </div>
     </div>
+    
   );
 };
 
